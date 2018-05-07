@@ -35,6 +35,16 @@ pipeline:
     deployment_release_name: "monitor"
 
     secrets: [plugin_endpoint, plugin_token]
+    
+  deploy_database:
+    image: banzaicloud/plugin-pipeline-client:nodejs
+    deployment_name: "stable/mongodb"
+    deployment_release_name: "nodejs-db"
+    deployment_values:
+        mongodbUsername: "{{ .PLUGIN_MONGODB_USERNAME }}"
+        mongodbPassword: "{{ .PLUGIN_MONGODB_PASSWORD }}"
+        mongodbDatabase: your-database
+    secrets: [plugin_endpoint, plugin_token, plugin_mongodb_username, plugin_mongodb_password]      
 
 # this step deploys the application to the Kubernetes cluster
   deploy_application:
